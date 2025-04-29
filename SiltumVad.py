@@ -11,6 +11,9 @@ T_g = 20
 t_max = 5000 # s
 
 
+def Analytical(t):
+    return (T_0 - T_g) * np.e ** (- k * t) + T_g
+
 def SolveEiler(t, dt_inner = 0.1 ):
     # print(dt_inner)
     t_inner = t
@@ -35,12 +38,15 @@ def SolveEiler(t, dt_inner = 0.1 ):
 # dt = 1500
 # t = np.arange(0, t_max, dt) 
 # plt.scatter(*SolveEiler(t, dt), label = dt)
-dt = 1
-t = np.arange(0, t_max, dt) 
-plt.scatter(*SolveEiler(t, dt), label = dt)
-dt = 0.1
-t = np.arange(0, t_max, dt) 
-plt.scatter(*SolveEiler(t, dt), label = dt)
+# dt = 1
+# t = np.arange(0, t_max, dt) 
+# plt.scatter(*SolveEiler(t, dt), label = dt)
+# dt = 0.1
+# t = np.arange(0, t_max, dt) 
+# plt.scatter(*SolveEiler(t, dt), label = dt)
+# dt = 100
+# t = np.arange(0, t_max, dt) 
+# plt.scatter(*SolveEiler(t, dt), label = dt)
 
 
 def dTdx(t, temp, k, T_g):
@@ -49,7 +55,11 @@ def dTdx(t, temp, k, T_g):
 
 t = np.arange(0, t_max)
 solution = sc.solve_ivp(dTdx, y0=[T_0, k, T_g], t_span=(0, t_max), args=[k, T_g], t_eval=t )
-plt.plot(t,*solution.y, label = "Analitical")
+plt.plot(t,*solution.y[0:1], label = "IVP", color="black")
+print(solution.y)
+
+t = np.arange(0, t_max)
+plt.scatter(t, Analytical(t), label = "Analytical")
 
 
 plt.legend(loc = "upper right")

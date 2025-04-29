@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
 class Simul():
     a : float 
     length :float #mm
@@ -37,10 +36,10 @@ class Simul():
         self.ut = np.zeros(shape=(len(self.time), self.nodes))
 
         ### fill array
-
         # self.u = np.zeros(self.nodes) + 20
         self.SetInitTemp(initTemp)
-        # self.u[0] = 200
+
+
         for i in range(0, len (constant_temp)):
             # print(len (constant_temp))
             # print(constant_temp[i,0])
