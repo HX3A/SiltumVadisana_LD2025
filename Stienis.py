@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-a = 1000 * 385 * 0.01
+a = 385 * 0.01
 length = 50 
 time = 4 #seconds
 nodes = 100
@@ -11,7 +11,7 @@ dt = 0.5 * dx**2 / a
 # dt = 0.01
 t_nodes = int(time/dt) + 1
 
-u = np.zeros(nodes) + 100 # Sakuma temp
+u = np.zeros(nodes) + 20 # Sakuma temp
 
 # Boundary
 u[0] = 200

@@ -20,7 +20,7 @@ class Simul():
 
     constant_temp : np.ndarray
 
-    def __init__(self, alpha = 385 * 0.01, length = 50, max_time = 3, nodes = 100, constant_temp = np.array( [[0,200], [-1,200]] ), initTemp = 20):
+    def __init__(self, alpha = 385 * 0.01, length = 50, max_time = 4, nodes = 100, constant_temp = np.array( [[0,200], [-1,200]] ), initTemp = 20):
         self.a = alpha
         self.length = length
         self.max_time = max_time
@@ -28,6 +28,7 @@ class Simul():
 
         self.dx = length / (nodes-1)
         self.dt = 0.5 * self.dx**2 / self.a
+        # self.dt = 0.05 # used for instability
 
         self.t_nodes = int(max_time/self.dt) + 1
         self.constant_temp = constant_temp
@@ -95,27 +96,33 @@ class Simul():
     
 
 System = Simul()
-System = Simul( constant_temp = np.array( [[20,200]]), max_time=10 )
+# System = Simul( constant_temp = np.array( [[20,200]]), max_time=10 )
+System = Simul( constant_temp = np.array( [[0,200], [-1, 0]]) )
+
 System.Solve(constantHeat=True)
 
-im = plt.pcolormesh(System.ut,  cmap=plt.cm.turbo, vmin=0, vmax=200)
+# im = plt.pcolormesh(System.ut,  cmap=plt.cm.turbo, vmin=0, vmax=200)
+# plt.colorbar(im)
+
+# plt.savefig("test.png")
+# plt.show()
 
 
-plt.colorbar(im)
-plt.savefig("test.png")
-plt.show()
 
-# fig, axis = plt.subplots()
 
-# pcm = axis.pcolormesh([System.u], cmap=plt.cm.jet, vmin=-1, vmax=100)
-# plt.colorbar(pcm, ax=axis)
-# axis.set_ylim([-2, 3])
 
-# # print(System.ut)
-# for i in range(len(System.ut)):
-#     u = System.ut[i]
-#     pcm.set_array([u])
-#     # axis.set_title("Distribution at t: {:.3f} [s].".format(counter))
-#     plt.pause(0.01)
+fig, axis = plt.subplots()
+
+pcm = axis.pcolormesh(System.ut,  cmap=plt.cm.turbo, vmin=0, vmax=200)
+plt.colorbar(pcm)
+axis.set_ylabel("Laiks, s")
+
+axis.set_yticks([x for x in range(0, len(System.ut), 30)])
+axis.set_yticklabels([f"{x * System.dt :.2f}" for x in range(0, len(System.ut), 30)])
+
+axis.set_xlabel("Pozīcija, cm")
+axis.set_xticks([x for x in range(0, System.nodes + 1, 10)])
+axis.set_xticklabels([f"{x * System.dx :.1f}" for x in range(0, System.nodes + 1, 10)])
+
 
 plt.show()
