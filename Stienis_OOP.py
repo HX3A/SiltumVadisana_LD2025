@@ -97,17 +97,17 @@ class Simul():
 
 System = Simul()
 # System = Simul( constant_temp = np.array( [[20,200]]), max_time=10 )
+
 System = Simul( constant_temp = np.array( [[0,200], [-1, 0]]) )
 
-System.Solve(constantHeat=True)
+### Solves with init conditions set as a sine wave with an amplitude 1000 degrees ###
+x = np.arange(0, System.length + System.dx, System.dx)
+sin_temp = 1000 * np.sin( 1.6 * np.pi * x / System.length  ) 
+sin_temp = [x if x > 0 else 0 for x in sin_temp ]
+System = Simul(max_time=100, constant_temp = np.array( []),initTemp= sin_temp)
 
-# im = plt.pcolormesh(System.ut,  cmap=plt.cm.turbo, vmin=0, vmax=200)
-# plt.colorbar(im)
-
-# plt.savefig("test.png")
-# plt.show()
-
-
+# System.Solve(constantHeat=True)
+System.SolveNoInsul(constantHeat=True)
 
 
 
@@ -117,8 +117,8 @@ pcm = axis.pcolormesh(System.ut,  cmap=plt.cm.turbo, vmin=0, vmax=200)
 plt.colorbar(pcm)
 axis.set_ylabel("Laiks, s")
 
-axis.set_yticks([x for x in range(0, len(System.ut), 30)])
-axis.set_yticklabels([f"{x * System.dt :.2f}" for x in range(0, len(System.ut), 30)])
+axis.set_yticks([x for x in range(0, len(System.ut), int( len(System.ut) / 4))])
+axis.set_yticklabels([f"{x * System.dt :.2f}" for x in range(0, len(System.ut), int( len(System.ut) / 4))])
 
 axis.set_xlabel("Pozīcija, cm")
 axis.set_xticks([x for x in range(0, System.nodes + 1, 10)])
